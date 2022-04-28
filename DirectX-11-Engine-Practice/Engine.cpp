@@ -38,3 +38,8 @@ void Engine::Update()
 		MouseEvent me = mouse.ReadEvent();
 	}
 }
+
+void Engine::RenderFrame()
+{
+	gfx.RenderFrame();
+}

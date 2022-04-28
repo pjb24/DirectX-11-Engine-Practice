@@ -133,11 +133,11 @@ LRESULT WindowContainer::WindowProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM
 			{
 				mouse.OnWheelDown( x, y );
 			}
-			break;
+			return 0;
 		}
 		case WM_INPUT:
 		{
-			UINT dataSize;
+			UINT dataSize = 0;
 
 			GetRawInputData( reinterpret_cast<HRAWINPUT>( lParam ), RID_INPUT, NULL, &dataSize, sizeof( RAWINPUTHEADER ) );
 			if ( dataSize > 0 )
