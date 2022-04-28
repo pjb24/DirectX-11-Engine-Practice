@@ -22,4 +22,9 @@ void Engine::Update()
 		KeyboardEvent kbe = keyboard.ReadKey();
 		unsigned char keycode = kbe.GetKeyCode();
 	}
+
+	while ( !mouse.EventBuffersIsEmpty() )
+	{
+		MouseEvent me = mouse.ReadEvent();
+	}
 }

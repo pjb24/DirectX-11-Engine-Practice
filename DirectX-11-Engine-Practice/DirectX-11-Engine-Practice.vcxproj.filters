@@ -19,6 +19,12 @@
     <Filter Include="소스 파일\Keyboard">
       <UniqueIdentifier>{ebfa1df1-9c84-4b0e-acec-0d952a2c1328}</UniqueIdentifier>
     </Filter>
+    <Filter Include="헤더 파일\Mouse">
+      <UniqueIdentifier>{4de970f8-c670-4583-9bcf-6279c5d6561e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Mouse">
+      <UniqueIdentifier>{e154a9d5-f859-41f7-9213-589a003f1aa8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">
