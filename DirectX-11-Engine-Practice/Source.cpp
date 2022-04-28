@@ -1,4 +1,4 @@
-#include <Windows.h>
+#include "ErrorLogger.h"
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "DirectXTK.lib")
 
