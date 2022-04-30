@@ -25,5 +25,5 @@ int APIENTRY wWinMain( _In_ HINSTANCE hInstance,
 // PIXEL SHADER - COMPLETED
 // OUTPUT MERGER - COMPLETED
 
-// Create Vertex Buffer
-// Draw
+// Create Vertex Buffer - COMPLETED
+// Draw - COMPLETED
