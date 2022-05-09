@@ -45,6 +45,11 @@ void Graphics::RenderFrame()
 	this->deviceContext->IASetVertexBuffers( 0, 1, vertexBuffer2.GetAddressOf(), &stride, &offset );
 	this->deviceContext->Draw( 3, 0 );
 
+	// Draw Text
+	spriteBatch->Begin();
+	spriteFont->DrawString( spriteBatch.get(), L"Hello World", DirectX::XMFLOAT2( 0, 0 ), DirectX::Colors::White, 0.0f, DirectX::XMFLOAT2( 0, 0 ), DirectX::XMFLOAT2( 1.0f, 1.0f ) );
+	spriteBatch->End();
+
 	this->swapchain->Present( 1, NULL );
 }
 
@@ -81,17 +86,17 @@ bool Graphics::InitializeDirectX( HWND hwnd, int width, int height )
 
 	HRESULT hr;
 	hr = D3D11CreateDeviceAndSwapChain( adapters[0].pAdapter,	// IDXGI Adapter
-										D3D_DRIVER_TYPE_UNKNOWN,
-										NULL,	// FOR SOFTWARE DRIVER TYPE
-										NULL,	// FLAGS FOR RUNTIME LAYERS
-										NULL,	// FEATURE LEVELS ARRAY
-										0,	// # OF FEATURE LEVELS IN ARRAY
-										D3D11_SDK_VERSION,
-										&scd,	// Swapchain description
-										this->swapchain.GetAddressOf(),
-										this->device.GetAddressOf(),
-										NULL,	// Supported feature level
-										this->deviceContext.GetAddressOf() );	// Device Context Address
+		D3D_DRIVER_TYPE_UNKNOWN,
+		NULL,	// FOR SOFTWARE DRIVER TYPE
+		NULL,	// FLAGS FOR RUNTIME LAYERS
+		NULL,	// FEATURE LEVELS ARRAY
+		0,	// # OF FEATURE LEVELS IN ARRAY
+		D3D11_SDK_VERSION,
+		&scd,	// Swapchain description
+		this->swapchain.GetAddressOf(),
+		this->device.GetAddressOf(),
+		NULL,	// Supported feature level
+		this->deviceContext.GetAddressOf() );	// Device Context Address
 
 	if ( FAILED( hr ) )
 	{
@@ -185,6 +190,9 @@ bool Graphics::InitializeDirectX( HWND hwnd, int width, int height )
 		ErrorLogger::Log( hr, "Failed to create rasterizer state." );
 		return false;
 	}
+
+	spriteBatch = std::make_unique<DirectX::SpriteBatch>( this->deviceContext.Get() );
+	spriteFont = std::make_unique<DirectX::SpriteFont>( this->device.Get(), L"..\\Data\\Fonts\\comic_sans_ms_16.spritefont" );
 
 	return true;
 }
