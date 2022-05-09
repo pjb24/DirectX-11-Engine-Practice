@@ -12,18 +12,28 @@ bool RenderWindow::Initialize( WindowContainer* pWindowContainer, HINSTANCE hIns
 
 	this->RegisterWindowClass();
 
+	int centerScreenX = GetSystemMetrics( SM_CXSCREEN ) / 2 - this->width / 2;
+	int centerScreenY = GetSystemMetrics( SM_CYSCREEN ) / 2 - this->height / 2;
+
+	RECT wr;	// Window Rectangle
+	wr.left = centerScreenX;
+	wr.top = centerScreenY;
+	wr.right = wr.left + this->width;
+	wr.bottom = wr.top + this->height;
+	AdjustWindowRect( &wr, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE );
+
 	this->handle = CreateWindowEx( 0,	// Extended Windows style - we are using the default. For other options, see: https://msdn.microsoft.com/en-us/library/windows/desktop/ff700543(v=vs.85).aspx
-								   this->window_class_wide.c_str(),	// Window class name
-								   this->window_title_wide.c_str(),	// Window Title
-								   WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU,	// Windows style - See: https://msdn.microsoft.com/en-us/library/windows/desktop/ms632600(v=vs.85).aspx
-								   0,	// Window X Position
-								   0,	// Window Y Position
-								   this->width,	// Window Width
-								   this->height,	// Window Height
-								   NULL,	// Handle to parent of this window. Since this is the first window, it has no parent window.
-								   NULL,	// Handle to menu or child window identifier. Can be set to NULL and use menu in WindowClassEx if a menu is desired to be used.
-								   this->hInstance,	// Handle to the instance of module to be used with this window
-								   pWindowContainer );	// Param to create window
+		this->window_class_wide.c_str(),	// Window class name
+		this->window_title_wide.c_str(),	// Window Title
+		WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU,	// Windows style - See: https://msdn.microsoft.com/en-us/library/windows/desktop/ms632600(v=vs.85).aspx
+		wr.left,	// Window X Position
+		wr.top,	// Window Y Position
+		wr.right - wr.left,	// Window Width
+		wr.bottom - wr.top,	// Window Height
+		NULL,	// Handle to parent of this window. Since this is the first window, it has no parent window.
+		NULL,	// Handle to menu or child window identifier. Can be set to NULL and use menu in WindowClassEx if a menu is desired to be used.
+		this->hInstance,	// Handle to the instance of module to be used with this window
+		pWindowContainer );	// Param to create window
 
 	if ( this->handle == NULL )
 	{
@@ -46,10 +56,10 @@ bool RenderWindow::ProcessMessage()
 	ZeroMemory( &msg, sizeof( MSG ) );	// Initialize the message structure.
 
 	while ( PeekMessage( &msg,	// Where to store message (if one exists) See: https://msdn.microsoft.com/en-us/library/windows/desktop/ms644943(v=vs.85).aspx
-						 this->handle,	// Handle to window we are checking messages for
-						 0,	// Minimum Filter Msg Value - We are not filtering for specific messages, but the min/max could be used to filter only mouse messages for example.
-						 0,	// Maximum Filter Msg Value
-						 PM_REMOVE ) )	// Remove message after capturing it via PeekMessage. For more argument options, see: https://msdn.microsoft.com/en-us/library/windows/desktop/ms644943(v=vs.85).aspx
+		this->handle,	// Handle to window we are checking messages for
+		0,	// Minimum Filter Msg Value - We are not filtering for specific messages, but the min/max could be used to filter only mouse messages for example.
+		0,	// Maximum Filter Msg Value
+		PM_REMOVE ) )	// Remove message after capturing it via PeekMessage. For more argument options, see: https://msdn.microsoft.com/en-us/library/windows/desktop/ms644943(v=vs.85).aspx
 	{
 		TranslateMessage( &msg );	// Translate message from virtual key messages into character messages so we can dispatch the message. See: https://msdn.microsoft.com/en-us/library/windows/desktop/ms644955(v=vs.85).aspx
 		DispatchMessage( &msg );	// Dispatch message to our Window Proc for this window. See: https://msdn.microsoft.com/en-us/library/windows/desktop/ms644934(v=vs.85).aspx
