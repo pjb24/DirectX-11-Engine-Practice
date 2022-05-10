@@ -6,7 +6,7 @@ int APIENTRY wWinMain( _In_ HINSTANCE hInstance,
 	_In_ int nCmdShow )
 {
 	HRESULT hr = CoInitialize( NULL );
-	if ( FAILED( hr ) )
+	if( FAILED( hr ) )
 	{
 		ErrorLogger::Log( hr, "Failed to call CoInitialize." );
 		return -1;
@@ -14,9 +14,9 @@ int APIENTRY wWinMain( _In_ HINSTANCE hInstance,
 
 	Engine engine;
 
-	if ( engine.Initialize( hInstance, "Title", "MyWindowClas", 800, 600 ) )
+	if( engine.Initialize( hInstance, "Title", "MyWindowClas", 800, 600 ) )
 	{
-		while ( engine.ProcessMessage() == true )
+		while( engine.ProcessMessage() == true )
 		{
 			engine.Update();
 			engine.RenderFrame();
