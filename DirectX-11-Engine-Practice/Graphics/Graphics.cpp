@@ -2,17 +2,17 @@
 
 bool Graphics::Initialize( HWND hwnd, int width, int height )
 {
-	if ( !InitializeDirectX( hwnd, width, height ) )
+	if( !InitializeDirectX( hwnd, width, height ) )
 	{
 		return false;
 	}
 
-	if ( !InitializeShaders() )
+	if( !InitializeShaders() )
 	{
 		return false;
 	}
 
-	if ( !InitializeScene() )
+	if( !InitializeScene() )
 	{
 		return false;
 	}
@@ -40,7 +40,9 @@ void Graphics::RenderFrame()
 	// Square
 	this->deviceContext->PSSetShaderResources( 0, 1, this->myTexture.GetAddressOf() );
 	this->deviceContext->IASetVertexBuffers( 0, 1, vertexBuffer.GetAddressOf(), &stride, &offset );
-	this->deviceContext->Draw( 6, 0 );
+	this->deviceContext->IASetIndexBuffer( indicesBuffer.Get(), DXGI_FORMAT_R32_UINT, 0 );
+
+	this->deviceContext->DrawIndexed( 6, 0, 0 );
 
 	// Draw Text
 	spriteBatch->Begin();
@@ -54,7 +56,7 @@ bool Graphics::InitializeDirectX( HWND hwnd, int width, int height )
 {
 	std::vector<AdapterData> adapters = AdapterReader::GetAdpaters();
 
-	if ( adapters.size() < 1 )
+	if( adapters.size() < 1 )
 	{
 		ErrorLogger::Log( "No IDXGI Adapters found." );
 		return false;
@@ -95,7 +97,7 @@ bool Graphics::InitializeDirectX( HWND hwnd, int width, int height )
 		NULL,	// Supported feature level
 		this->deviceContext.GetAddressOf() );	// Device Context Address
 
-	if ( FAILED( hr ) )
+	if( FAILED( hr ) )
 	{
 		ErrorLogger::Log( hr, "Failed to create device and swapchain." );
 		return false;
@@ -103,14 +105,14 @@ bool Graphics::InitializeDirectX( HWND hwnd, int width, int height )
 
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> backbuffer;
 	hr = this->swapchain->GetBuffer( 0, __uuidof( ID3D11Texture2D ), reinterpret_cast<void**>( backbuffer.GetAddressOf() ) );
-	if ( FAILED( hr ) )	// If error occured
+	if( FAILED( hr ) )	// If error occured
 	{
 		ErrorLogger::Log( hr, "GetBuffer Failed." );
 		return false;
 	}
 
 	hr = this->device->CreateRenderTargetView( backbuffer.Get(), NULL, this->renderTargetView.GetAddressOf() );
-	if ( FAILED( hr ) )	// If error occured
+	if( FAILED( hr ) )	// If error occured
 	{
 		ErrorLogger::Log( hr, "Failed to Create render target view." );
 		return false;
@@ -131,14 +133,14 @@ bool Graphics::InitializeDirectX( HWND hwnd, int width, int height )
 	depthStencilDesc.MiscFlags = 0;
 
 	hr = this->device->CreateTexture2D( &depthStencilDesc, NULL, this->depthStencilBuffer.GetAddressOf() );
-	if ( FAILED( hr ) )	// If error occurred
+	if( FAILED( hr ) )	// If error occurred
 	{
 		ErrorLogger::Log( hr, "Failed to create depth stencil buffer." );
 		return false;
 	}
 
 	hr = this->device->CreateDepthStencilView( this->depthStencilBuffer.Get(), NULL, this->depthStencilView.GetAddressOf() );
-	if ( FAILED( hr ) )	// If error occurred
+	if( FAILED( hr ) )	// If error occurred
 	{
 		ErrorLogger::Log( hr, "Failed to create depth stencil view." );
 		return false;
@@ -155,7 +157,7 @@ bool Graphics::InitializeDirectX( HWND hwnd, int width, int height )
 	depthstencildesc.DepthFunc = D3D11_COMPARISON_FUNC::D3D11_COMPARISON_LESS_EQUAL;
 
 	hr = this->device->CreateDepthStencilState( &depthstencildesc, this->depthStencilState.GetAddressOf() );
-	if ( FAILED( hr ) )
+	if( FAILED( hr ) )
 	{
 		ErrorLogger::Log( hr, "Failed to create depth stencil state." );
 		return false;
@@ -182,7 +184,7 @@ bool Graphics::InitializeDirectX( HWND hwnd, int width, int height )
 	rasterizerDesc.FillMode = D3D11_FILL_MODE::D3D11_FILL_SOLID;
 	rasterizerDesc.CullMode = D3D11_CULL_MODE::D3D11_CULL_BACK;
 	hr = this->device->CreateRasterizerState( &rasterizerDesc, this->rasterizerState.GetAddressOf() );
-	if ( FAILED( hr ) )
+	if( FAILED( hr ) )
 	{
 		ErrorLogger::Log( hr, "Failed to create rasterizer state." );
 		return false;
@@ -202,7 +204,7 @@ bool Graphics::InitializeDirectX( HWND hwnd, int width, int height )
 	sampDesc.MinLOD = 0;
 	sampDesc.MaxLOD = D3D11_FLOAT32_MAX;
 	hr = this->device->CreateSamplerState( &sampDesc, this->samplerState.GetAddressOf() );	// Create sampler state.
-	if ( FAILED( hr ) )
+	if( FAILED( hr ) )
 	{
 		ErrorLogger::Log( hr, "Failed to create sampler state." );
 		return false;
@@ -215,7 +217,7 @@ bool Graphics::InitializeShaders()
 {
 	std::wstring shaderfolder = L"";
 #pragma region DetermineShaderPath
-	if ( IsDebuggerPresent() == TRUE )
+	if( IsDebuggerPresent() == TRUE )
 	{
 #ifdef _DEBUG	// Debug Mode
 #ifdef _WIN64	// x64
@@ -241,12 +243,12 @@ bool Graphics::InitializeShaders()
 
 	UINT numElements = ARRAYSIZE( layout );
 
-	if ( !vertexshader.Initialize( this->device, shaderfolder + L"vertexshader.cso", layout, numElements ) )
+	if( !vertexshader.Initialize( this->device, shaderfolder + L"vertexshader.cso", layout, numElements ) )
 	{
 		return false;
 	}
 
-	if ( !pixelshader.Initialize( this->device, shaderfolder + L"pixelshader.cso" ) )
+	if( !pixelshader.Initialize( this->device, shaderfolder + L"pixelshader.cso" ) )
 	{
 		return false;
 	}
@@ -259,15 +261,19 @@ bool Graphics::InitializeScene()
 	// Textured Square
 	Vertex v[] =
 	{
-		Vertex( -0.5f, -0.5f, 1.0f, 0.0f, 1.0f ),	// Bottom Left
-		Vertex( -0.5f,  0.5f, 1.0f, 0.0f, 0.0f ),	// Top Left
-		Vertex( 0.5f,  0.5f, 1.0f, 1.0f, 0.0f ),	// Top Right
-
-		Vertex( -0.5f, -0.5f, 1.0f, 0.0f, 1.0f ),	// Bottom Left
-		Vertex( 0.5f,   0.5f, 1.0f, 1.0f, 0.0f ),	// Top Right
-		Vertex( 0.5f,  -0.5f, 1.0f, 1.0f, 1.0f ),	// Bottom Right
+		Vertex( -0.5f, -0.5f, 1.0f, 0.0f, 1.0f ),	// Bottom Left	- [0]
+		Vertex( -0.5f,  0.5f, 1.0f, 0.0f, 0.0f ),	// Top Left		- [1]
+		Vertex( 0.5f,  0.5f, 1.0f, 1.0f, 0.0f ),	// Top Right	- [2]
+		Vertex( 0.5f,  -0.5f, 1.0f, 1.0f, 1.0f ),	// Bottom Right	- [3]
 	};
 
+	DWORD indices[] =
+	{
+		0, 1, 2,
+		0, 2, 3
+	};
+
+	// Load Vertex Data
 	D3D11_BUFFER_DESC vertexBufferDesc;
 	ZeroMemory( &vertexBufferDesc, sizeof( vertexBufferDesc ) );
 
@@ -282,14 +288,35 @@ bool Graphics::InitializeScene()
 	vertexBufferData.pSysMem = v;
 
 	HRESULT hr = this->device->CreateBuffer( &vertexBufferDesc, &vertexBufferData, this->vertexBuffer.GetAddressOf() );
-	if ( FAILED( hr ) )
+	if( FAILED( hr ) )
 	{
 		ErrorLogger::Log( hr, "Failed to create vertex buffer." );
 		return false;
 	}
 
+	// Load Index Data
+	D3D11_BUFFER_DESC indexBufferDesc;
+	ZeroMemory( &indexBufferDesc, sizeof( indexBufferDesc ) );
+
+	indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	indexBufferDesc.ByteWidth = sizeof( DWORD ) * ARRAYSIZE( indices );
+	indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	indexBufferDesc.CPUAccessFlags = 0;
+	indexBufferDesc.MiscFlags = 0;
+
+	D3D11_SUBRESOURCE_DATA indexBufferData;
+	ZeroMemory( &indexBufferData, sizeof( indexBufferData ) );
+	indexBufferData.pSysMem = indices;
+
+	hr = this->device->CreateBuffer( &indexBufferDesc, &indexBufferData, this->indicesBuffer.GetAddressOf() );
+	if( FAILED( hr ) )
+	{
+		ErrorLogger::Log( hr, "Failed to create indices buffer." );
+		return false;
+	}
+
 	hr = DirectX::CreateWICTextureFromFile( this->device.Get(), L"..\\Data\\Textures\\bird.jpg", nullptr, myTexture.GetAddressOf() );
-	if ( FAILED( hr ) )
+	if( FAILED( hr ) )
 	{
 		ErrorLogger::Log( hr, "Failed to create wic texture from file." );
 		return false;
