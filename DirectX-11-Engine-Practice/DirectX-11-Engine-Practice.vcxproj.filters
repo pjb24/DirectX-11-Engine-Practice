@@ -119,7 +119,10 @@
     <ClInclude Include="Graphics\IndexBuffer.h">
       <Filter>헤더 파일\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Graphics\ConstantBufferType.h">
+    <ClInclude Include="Graphics\ConstantBufferTypes.h">
+      <Filter>헤더 파일\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\ConstantBuffer.h">
       <Filter>헤더 파일\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
