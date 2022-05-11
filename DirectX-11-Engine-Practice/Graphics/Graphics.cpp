@@ -37,8 +37,11 @@ void Graphics::RenderFrame()
 	UINT offset = 0;
 
 	// Update Constant Buffer
-	constantBuffer.data.xOffset = 0.0f;
-	constantBuffer.data.yOffset = 0.5f;
+	// constantBuffer.data.mat = DirectX::XMMatrixIdentity();	// 기본
+	// constantBuffer.data.mat = DirectX::XMMatrixTranslation( 0.0f, -0.5f, 0.0f );	// 이동
+	// constantBuffer.data.mat = DirectX::XMMatrixRotationRollPitchYaw( 0.0f, 0.0f, DirectX::XM_PIDIV2 );	// 회전
+	constantBuffer.data.mat = DirectX::XMMatrixScaling( 0.5f, 0.5f, 1.0f );	// 크기조절
+	constantBuffer.data.mat = DirectX::XMMatrixTranspose( constantBuffer.data.mat );	// 행렬 전치
 	if( !constantBuffer.ApplyChanges() )
 	{
 		return;
