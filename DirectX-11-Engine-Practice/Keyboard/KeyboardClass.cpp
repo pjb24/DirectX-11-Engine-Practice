@@ -2,7 +2,7 @@
 
 KeyboardClass::KeyboardClass()
 {
-	for ( size_t i = 0; i < 255; i++ )
+	for ( size_t i = 0; i < 256; i++ )
 	{
 		this->keyStates[i] = false;	// Initialize all key states to off (false)
 	}

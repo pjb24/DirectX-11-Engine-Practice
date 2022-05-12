@@ -38,10 +38,10 @@ LRESULT WindowContainer::WindowProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM
 			}
 			else
 			{
-				const bool wasPressed = lParam & 40000000;
+				const bool wasPressed = lParam & 0x40000000;
 				if ( !wasPressed )
 				{
-					keyboard.OnChar( keycode );
+					keyboard.OnKeyPressed( keycode );
 				}
 			}
 			return 0;
@@ -62,7 +62,7 @@ LRESULT WindowContainer::WindowProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM
 			}
 			else
 			{
-				const bool wasPressed = lParam & 40000000;
+				const bool wasPressed = lParam & 0x40000000;
 				if ( !wasPressed )
 				{
 					keyboard.OnChar( ch );

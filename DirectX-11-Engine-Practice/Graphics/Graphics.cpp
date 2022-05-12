@@ -41,8 +41,6 @@ void Graphics::RenderFrame()
 
 	// Update Constant Buffer
 	XMMATRIX world = XMMatrixIdentity();	// 단위 행렬
-	this->camera.AdjustPosition( 0.01f, 0.0f, 0.0f );
-	camera.SetLookAtPos( XMFLOAT3( 0.0f, 0.0f, 0.0f ) );
 	constantBuffer.data.mat = world * this->camera.GetViewMatrix() * this->camera.GetProjectionMatrix();
 	constantBuffer.data.mat = DirectX::XMMatrixTranspose( constantBuffer.data.mat );	// 행렬 전치
 	
