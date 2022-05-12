@@ -32,6 +32,11 @@ public:
 
 	HRESULT Initialize( ID3D11Device* device, ID3D11DeviceContext* deviceContext )
 	{
+		if ( this->buffer.Get() != nullptr )
+		{
+			this->buffer.Reset();
+		}
+
 		this->deviceContext = deviceContext;
 
 		D3D11_BUFFER_DESC desc;
@@ -50,7 +55,7 @@ public:
 	{
 		D3D11_MAPPED_SUBRESOURCE mappedResource;
 		HRESULT hr = this->deviceContext->Map( buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource );
-		if( FAILED( hr ) )
+		if ( FAILED( hr ) )
 		{
 			ErrorLogger::Log( hr, "Failed to map constant buffer." );
 			return false;
