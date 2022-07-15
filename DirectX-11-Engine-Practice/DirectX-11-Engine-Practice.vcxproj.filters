@@ -1,192 +1,198 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="소스 파일">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="헤더 파일">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
     <Filter Include="리소스 파일">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="헤더 파일\Keyboard">
-      <UniqueIdentifier>{b297bea5-7a60-4d79-872c-2e2942543364}</UniqueIdentifier>
+    <Filter Include="Source File">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="소스 파일\Keyboard">
+    <Filter Include="Source File\Keyboard">
       <UniqueIdentifier>{ebfa1df1-9c84-4b0e-acec-0d952a2c1328}</UniqueIdentifier>
     </Filter>
-    <Filter Include="헤더 파일\Mouse">
-      <UniqueIdentifier>{4de970f8-c670-4583-9bcf-6279c5d6561e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\Mouse">
+    <Filter Include="Source File\Mouse">
       <UniqueIdentifier>{e154a9d5-f859-41f7-9213-589a003f1aa8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="헤더 파일\Graphics">
-      <UniqueIdentifier>{83a7a242-a19e-473c-b618-b504eb40b7ff}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\Graphics">
+    <Filter Include="Source File\Graphics">
       <UniqueIdentifier>{f017b9f8-931a-4380-a9c8-1387df7cdd03}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\Graphics\ImGui">
+    <Filter Include="Source File\Graphics\ImGui">
       <UniqueIdentifier>{b6f3b0cf-6263-4fdb-8193-ccd5ab6f4906}</UniqueIdentifier>
     </Filter>
-    <Filter Include="헤더 파일\Graphics\ImGui">
+    <Filter Include="Header File">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Header File\Keyboard">
+      <UniqueIdentifier>{b297bea5-7a60-4d79-872c-2e2942543364}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header File\Mouse">
+      <UniqueIdentifier>{4de970f8-c670-4583-9bcf-6279c5d6561e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header File\Graphics">
+      <UniqueIdentifier>{83a7a242-a19e-473c-b618-b504eb40b7ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header File\Graphics\ImGui">
       <UniqueIdentifier>{1a56b022-00fc-44d2-a9fd-a21062b68d75}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>Source File</Filter>
     </ClCompile>
     <ClCompile Include="StringConverter.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>Source File</Filter>
     </ClCompile>
     <ClCompile Include="ErrorLogger.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>Source File</Filter>
     </ClCompile>
     <ClCompile Include="RenderWindow.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>Source File</Filter>
     </ClCompile>
     <ClCompile Include="Engine.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>Source File</Filter>
     </ClCompile>
     <ClCompile Include="WindowContainer.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>Source File</Filter>
     </ClCompile>
     <ClCompile Include="Keyboard\KeyboardEvent.cpp">
-      <Filter>소스 파일\Keyboard</Filter>
+      <Filter>Source File\Keyboard</Filter>
     </ClCompile>
     <ClCompile Include="Keyboard\KeyboardClass.cpp">
-      <Filter>소스 파일\Keyboard</Filter>
+      <Filter>Source File\Keyboard</Filter>
     </ClCompile>
     <ClCompile Include="Mouse\MouseClass.cpp">
-      <Filter>소스 파일\Mouse</Filter>
+      <Filter>Source File\Mouse</Filter>
     </ClCompile>
     <ClCompile Include="Mouse\MouseEvent.cpp">
-      <Filter>소스 파일\Mouse</Filter>
+      <Filter>Source File\Mouse</Filter>
     </ClCompile>
     <ClCompile Include="Graphics\Graphics.cpp">
-      <Filter>소스 파일\Graphics</Filter>
+      <Filter>Source File\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Graphics\AdapterReader.cpp">
-      <Filter>소스 파일\Graphics</Filter>
+      <Filter>Source File\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Graphics\Shaders.cpp">
-      <Filter>소스 파일\Graphics</Filter>
+      <Filter>Source File\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Graphics\Camera.cpp">
-      <Filter>소스 파일\Graphics</Filter>
+      <Filter>Source File\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Timer.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>Source File</Filter>
     </ClCompile>
     <ClCompile Include="Graphics\ImGui\imgui.cpp">
-      <Filter>소스 파일\Graphics\ImGui</Filter>
+      <Filter>Source File\Graphics\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="Graphics\ImGui\imgui_draw.cpp">
-      <Filter>소스 파일\Graphics\ImGui</Filter>
+      <Filter>Source File\Graphics\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="Graphics\ImGui\imgui_impl_dx11.cpp">
-      <Filter>소스 파일\Graphics\ImGui</Filter>
+      <Filter>Source File\Graphics\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="Graphics\ImGui\imgui_impl_win32.cpp">
-      <Filter>소스 파일\Graphics\ImGui</Filter>
+      <Filter>Source File\Graphics\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="Graphics\ImGui\imgui_tables.cpp">
-      <Filter>소스 파일\Graphics\ImGui</Filter>
+      <Filter>Source File\Graphics\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="Graphics\ImGui\imgui_widgets.cpp">
-      <Filter>소스 파일\Graphics\ImGui</Filter>
+      <Filter>Source File\Graphics\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Model.cpp">
+      <Filter>Source File\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StringConverter.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>Header File</Filter>
     </ClInclude>
     <ClInclude Include="ErrorLogger.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>Header File</Filter>
     </ClInclude>
     <ClInclude Include="RenderWindow.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>Header File</Filter>
     </ClInclude>
     <ClInclude Include="Engine.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>Header File</Filter>
     </ClInclude>
     <ClInclude Include="WindowContainer.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>Header File</Filter>
     </ClInclude>
     <ClInclude Include="Keyboard\KeyboardEvent.h">
-      <Filter>헤더 파일\Keyboard</Filter>
+      <Filter>Header File\Keyboard</Filter>
     </ClInclude>
     <ClInclude Include="Keyboard\KeyboardClass.h">
-      <Filter>헤더 파일\Keyboard</Filter>
+      <Filter>Header File\Keyboard</Filter>
     </ClInclude>
     <ClInclude Include="Mouse\MouseClass.h">
-      <Filter>헤더 파일\Mouse</Filter>
+      <Filter>Header File\Mouse</Filter>
     </ClInclude>
     <ClInclude Include="Mouse\MouseEvent.h">
-      <Filter>헤더 파일\Mouse</Filter>
+      <Filter>Header File\Mouse</Filter>
     </ClInclude>
     <ClInclude Include="Graphics\Graphics.h">
-      <Filter>헤더 파일\Graphics</Filter>
+      <Filter>Header File\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Graphics\AdapterReader.h">
-      <Filter>헤더 파일\Graphics</Filter>
+      <Filter>Header File\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Graphics\Vertex.h">
-      <Filter>헤더 파일\Graphics</Filter>
+      <Filter>Header File\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Graphics\Shaders.h">
-      <Filter>헤더 파일\Graphics</Filter>
+      <Filter>Header File\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Graphics\VertexBuffer.h">
-      <Filter>헤더 파일\Graphics</Filter>
+      <Filter>Header File\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Graphics\IndexBuffer.h">
-      <Filter>헤더 파일\Graphics</Filter>
+      <Filter>Header File\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Graphics\ConstantBufferTypes.h">
-      <Filter>헤더 파일\Graphics</Filter>
+      <Filter>Header File\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Graphics\ConstantBuffer.h">
-      <Filter>헤더 파일\Graphics</Filter>
+      <Filter>Header File\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Graphics\Camera.h">
-      <Filter>헤더 파일\Graphics</Filter>
+      <Filter>Header File\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Timer.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>Header File</Filter>
     </ClInclude>
     <ClInclude Include="Graphics\ImGui\imconfig.h">
-      <Filter>헤더 파일\Graphics\ImGui</Filter>
+      <Filter>Header File\Graphics\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="Graphics\ImGui\imgui.h">
-      <Filter>헤더 파일\Graphics\ImGui</Filter>
+      <Filter>Header File\Graphics\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="Graphics\ImGui\imgui_impl_dx11.h">
-      <Filter>헤더 파일\Graphics\ImGui</Filter>
+      <Filter>Header File\Graphics\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="Graphics\ImGui\imgui_impl_win32.h">
-      <Filter>헤더 파일\Graphics\ImGui</Filter>
+      <Filter>Header File\Graphics\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="Graphics\ImGui\imgui_internal.h">
-      <Filter>헤더 파일\Graphics\ImGui</Filter>
+      <Filter>Header File\Graphics\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="Graphics\ImGui\imstb_rectpack.h">
-      <Filter>헤더 파일\Graphics\ImGui</Filter>
+      <Filter>Header File\Graphics\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="Graphics\ImGui\imstb_textedit.h">
-      <Filter>헤더 파일\Graphics\ImGui</Filter>
+      <Filter>Header File\Graphics\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="Graphics\ImGui\imstb_truetype.h">
-      <Filter>헤더 파일\Graphics\ImGui</Filter>
+      <Filter>Header File\Graphics\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="COMException.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>Header File</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Model.h">
+      <Filter>Header File\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
