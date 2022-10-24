@@ -229,7 +229,7 @@ bool Graphics::InitializeDirectX( HWND hwnd )
 		COM_ERROR_IF_FAILED( hr, "Failed to create blend state." );
 
 		spriteBatch = std::make_unique<DirectX::SpriteBatch>( this->deviceContext.Get() );
-		spriteFont = std::make_unique<DirectX::SpriteFont>( this->device.Get(), L"..\\Data\\Fonts\\comic_sans_ms_16.spritefont" );
+		spriteFont = std::make_unique<DirectX::SpriteFont>( this->device.Get(), L"../Data/Fonts/comic_sans_ms_16.spritefont" );
 
 		// Create sampler description for sampler state
 		CD3D11_SAMPLER_DESC sampDesc( D3D11_DEFAULT );
@@ -296,13 +296,13 @@ bool Graphics::InitializeScene()
 	{
 		HRESULT hr;
 		//Load Texture
-		hr = DirectX::CreateWICTextureFromFile( this->device.Get(), L"..\\Data\\Textures\\seamless_grass.jpg", nullptr, grassTexture.GetAddressOf() );
+		hr = DirectX::CreateWICTextureFromFile( this->device.Get(), L"../Data/Textures/seamless_grass.jpg", nullptr, grassTexture.GetAddressOf() );
 		COM_ERROR_IF_FAILED( hr, "Failed to create wic texture from file." );
 
-		hr = DirectX::CreateWICTextureFromFile( this->device.Get(), L"..\\Data\\Textures\\pinksquare.jpg", nullptr, pinkTexture.GetAddressOf() );
+		hr = DirectX::CreateWICTextureFromFile( this->device.Get(), L"../Data/Textures/pinksquare.jpg", nullptr, pinkTexture.GetAddressOf() );
 		COM_ERROR_IF_FAILED( hr, "Failed to create wic texture from file." );
 
-		hr = DirectX::CreateWICTextureFromFile( this->device.Get(), L"..\\Data\\Textures\\seamless_pavement.jpg", nullptr, pavementTexture.GetAddressOf() );
+		hr = DirectX::CreateWICTextureFromFile( this->device.Get(), L"../Data/Textures/seamless_pavement.jpg", nullptr, pavementTexture.GetAddressOf() );
 		COM_ERROR_IF_FAILED( hr, "Failed to create wic texture from file." );
 
 		// Initialize Constant Buffer(s)
@@ -313,7 +313,7 @@ bool Graphics::InitializeScene()
 		COM_ERROR_IF_FAILED( hr, "Failed to initialize constant buffer." );
 
 		//Initialize Model(s)
-		if ( !model.Initialize( this->device.Get(), this->deviceContext.Get(), this->pavementTexture.Get(), cb_vs_vertexshader ) )
+		if ( !model.Initialize( "../Data/Objects/nanosuit/nanosuit.obj", this->device.Get(), this->deviceContext.Get(), this->grassTexture.Get(), cb_vs_vertexshader))
 		{
 			return false;
 		}
