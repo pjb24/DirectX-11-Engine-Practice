@@ -163,6 +163,7 @@
     <ClCompile Include="Graphics\AdapterReader.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="ErrorLogger.cpp" />
+    <ClCompile Include="Graphics\Color.cpp" />
     <ClCompile Include="Graphics\GameObject.cpp" />
     <ClCompile Include="Graphics\Graphics.cpp" />
     <ClCompile Include="Graphics\ImGui\imgui.cpp" />
@@ -173,6 +174,7 @@
     <ClCompile Include="Graphics\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="Graphics\Mesh.cpp" />
     <ClCompile Include="Graphics\Model.cpp" />
+    <ClCompile Include="Graphics\Texture.cpp" />
     <ClCompile Include="Keyboard\KeyboardClass.cpp" />
     <ClCompile Include="Keyboard\KeyboardEvent.cpp" />
     <ClCompile Include="Mouse\MouseClass.cpp" />
@@ -187,6 +189,7 @@
   <ItemGroup>
     <ClInclude Include="COMException.h" />
     <ClInclude Include="Graphics\Camera.h" />
+    <ClInclude Include="Graphics\Color.h" />
     <ClInclude Include="Graphics\ConstantBuffer.h" />
     <ClInclude Include="Graphics\ConstantBufferTypes.h" />
     <ClInclude Include="Graphics\AdapterReader.h" />
@@ -205,6 +208,7 @@
     <ClInclude Include="Graphics\IndexBuffer.h" />
     <ClInclude Include="Graphics\Mesh.h" />
     <ClInclude Include="Graphics\Model.h" />
+    <ClInclude Include="Graphics\Texture.h" />
     <ClInclude Include="Keyboard\KeyboardClass.h" />
     <ClInclude Include="Keyboard\KeyboardEvent.h" />
     <ClInclude Include="Mouse\MouseClass.h" />
