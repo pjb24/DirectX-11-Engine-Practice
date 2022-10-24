@@ -48,35 +48,8 @@ void Graphics::RenderFrame()
 	this->deviceContext->VSSetShader( vertexshader.GetShader(), NULL, 0 );
 	this->deviceContext->PSSetShader( pixelshader.GetShader(), NULL, 0 );
 
-	UINT offset = 0;
-
-	//static float alpha = 0.5f;
-	{ //Pavement Texture
-		this->model.Draw( camera.GetViewMatrix() * camera.GetProjectionMatrix() );
-		//// Update Constant Buffer
-		//static float translationOffset[3] = { 0, 0, -1.0f };
-		//XMMATRIX world = XMMatrixTranslation( translationOffset[0], translationOffset[1], translationOffset[2] );
-		//cb_vs_vertexshader.data.mat = world * this->camera.GetViewMatrix() * this->camera.GetProjectionMatrix();
-		//cb_vs_vertexshader.data.mat = DirectX::XMMatrixTranspose( cb_vs_vertexshader.data.mat );	// 행렬 전치
-
-		//if ( !cb_vs_vertexshader.ApplyChanges() )
-		//{
-		//	return;
-		//}
-		//this->deviceContext->VSSetConstantBuffers( 0, 1, this->cb_vs_vertexshader.GetAddressOf() );
-
-		////this->cb_ps_pixelshader.data.alpha = alpha;
-		////this->cb_ps_pixelshader.ApplyChanges();
-		////this->deviceContext->PSSetConstantBuffers( 0, 1, this->cb_ps_pixelshader.GetAddressOf() );
-
-		//// Square
-		//this->deviceContext->PSSetShaderResources( 0, 1, this->pavementTexture.GetAddressOf() );
-		//this->deviceContext->IASetVertexBuffers( 0, 1, vertexBuffer.GetAddressOf(), vertexBuffer.StridePtr(), &offset );
-		//this->deviceContext->IASetIndexBuffer( indicesBuffer.Get(), DXGI_FORMAT_R32_UINT, 0 );
-		//this->deviceContext->RSSetState( this->rasterizerState_CullFront.Get() );
-		//this->deviceContext->DrawIndexed( indicesBuffer.BufferSize(), 0, 0 );
-		//this->deviceContext->RSSetState( this->rasterizerState.Get() );
-		//this->deviceContext->DrawIndexed( indicesBuffer.BufferSize(), 0, 0 );
+	{
+		this->gameObject.Draw( camera.GetViewMatrix() * camera.GetProjectionMatrix() );
 	}
 
 	// Draw Text
@@ -108,8 +81,6 @@ void Graphics::RenderFrame()
 	ImGui::SameLine();
 	std::string clickCount = "Click Count: " + std::to_string( counter );
 	ImGui::Text( clickCount.c_str() );
-	//ImGui::DragFloat3( "Translation X/Y/Z", translationOffset, 0.1f, -5.0f, 5.0f );
-	//ImGui::DragFloat( "Alpha", &alpha, 0.1f, 0.0f, 1.0f );
 	ImGui::End();
 	//Assemble Together Draw Data
 	ImGui::Render();
@@ -313,7 +284,7 @@ bool Graphics::InitializeScene()
 		COM_ERROR_IF_FAILED( hr, "Failed to initialize constant buffer." );
 
 		//Initialize Model(s)
-		if ( !model.Initialize( "../Data/Objects/nanosuit/nanosuit.obj", this->device.Get(), this->deviceContext.Get(), this->grassTexture.Get(), cb_vs_vertexshader))
+		if ( !gameObject.Initialize( "../Data/Objects/nanosuit/nanosuit.obj", this->device.Get(), this->deviceContext.Get(), this->grassTexture.Get(), cb_vs_vertexshader))
 		{
 			return false;
 		}
