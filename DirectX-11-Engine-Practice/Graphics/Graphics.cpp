@@ -63,7 +63,7 @@ void Graphics::RenderFrame()
 		this->fpsTimer.Restart();
 	}
 	spriteBatch->Begin();
-	spriteFont->DrawString( spriteBatch.get(), StringConverter::StringToWide( fpsString ).c_str(), DirectX::XMFLOAT2( 0, 0 ), DirectX::Colors::White, 0.0f, DirectX::XMFLOAT2( 0, 0 ), DirectX::XMFLOAT2( 1.0f, 1.0f ) );
+	spriteFont->DrawString( spriteBatch.get(), StringHelper::StringToWide( fpsString ).c_str(), DirectX::XMFLOAT2( 0, 0 ), DirectX::Colors::White, 0.0f, DirectX::XMFLOAT2( 0, 0 ), DirectX::XMFLOAT2( 1.0f, 1.0f ) );
 	spriteBatch->End();
 
 	static int counter = 0;
@@ -94,7 +94,7 @@ bool Graphics::InitializeDirectX( HWND hwnd )
 {
 	try
 	{
-		std::vector<AdapterData> adapters = AdapterReader::GetAdpaters();
+		std::vector<AdapterData> adapters = AdapterReader::GetAdapters();
 
 		if ( adapters.size() < 1 )
 		{
@@ -284,7 +284,7 @@ bool Graphics::InitializeScene()
 		COM_ERROR_IF_FAILED( hr, "Failed to initialize constant buffer." );
 
 		//Initialize Model(s)
-		if ( !gameObject.Initialize( "../Data/Objects/Samples/blue_cube_notexture.fbx", this->device.Get(), this->deviceContext.Get(), cb_vs_vertexshader))
+		if ( !gameObject.Initialize( "../Data/Objects/nanosuit/nanosuit.obj", this->device.Get(), this->deviceContext.Get(), cb_vs_vertexshader))
 		{
 			return false;
 		}

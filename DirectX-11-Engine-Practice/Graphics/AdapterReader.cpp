@@ -2,7 +2,7 @@
 
 std::vector<AdapterData> AdapterReader::adapters;
 
-std::vector<AdapterData> AdapterReader::GetAdpaters()
+std::vector<AdapterData> AdapterReader::GetAdapters()
 {
 	if ( adapters.size() > 0 )	// If already initialized
 	{

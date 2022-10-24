@@ -37,7 +37,7 @@ const XMFLOAT3& Camera::GetPositionFloat3() const
 
 const XMVECTOR& Camera::GetRotationVector() const
 {
-	return rotVector;
+	return this->rotVector;
 }
 
 const XMFLOAT3& Camera::GetRotationFloat3() const
@@ -75,9 +75,9 @@ void Camera::AdjustPosition( const XMVECTOR& pos )
 
 void Camera::AdjustPosition( const XMFLOAT3& pos )
 {
-	this->pos.x += rot.x;
-	this->pos.y += rot.y;
-	this->pos.z += rot.z;
+	this->pos.x += pos.x;
+	this->pos.y += pos.y;
+	this->pos.z += pos.z;
 	this->posVector = XMLoadFloat3( &this->pos );
 	this->UpdateViewMatrix();
 }

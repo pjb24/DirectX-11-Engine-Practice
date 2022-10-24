@@ -15,7 +15,7 @@ public:
 class AdapterReader
 {
 public:
-	static std::vector<AdapterData> GetAdpaters();
+	static std::vector<AdapterData> GetAdapters();
 
 private:
 	static std::vector<AdapterData> adapters;

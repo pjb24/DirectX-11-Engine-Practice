@@ -42,7 +42,7 @@
     <ClCompile Include="Source.cpp">
       <Filter>Source File</Filter>
     </ClCompile>
-    <ClCompile Include="StringConverter.cpp">
+    <ClCompile Include="StringHelper.cpp">
       <Filter>Source File</Filter>
     </ClCompile>
     <ClCompile Include="ErrorLogger.cpp">
@@ -119,7 +119,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="StringConverter.h">
+    <ClInclude Include="StringHelper.h">
       <Filter>Header File</Filter>
     </ClInclude>
     <ClInclude Include="ErrorLogger.h">
