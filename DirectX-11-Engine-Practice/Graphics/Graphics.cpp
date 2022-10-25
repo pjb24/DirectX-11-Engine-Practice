@@ -58,11 +58,19 @@ void Graphics::RenderFrame()
 	this->deviceContext->PSSetShader( pixelshader.GetShader(), NULL, 0 );
 
 	{
-		this->gameObject.Draw( camera.GetViewMatrix() * camera.GetProjectionMatrix() );
+		this->gameObject.Draw( camera3D.GetViewMatrix() * camera3D.GetProjectionMatrix() );
 	}
 	{
 		this->deviceContext->PSSetShader(pixelshader_nolight.GetShader(), NULL, 0);
-		this->light.Draw(camera.GetViewMatrix() * camera.GetProjectionMatrix());
+		this->light.Draw(camera3D.GetViewMatrix() * camera3D.GetProjectionMatrix());
+	}
+
+	this->deviceContext->IASetInputLayout(this->vertexshader_2d.GetInputLayout());
+	this->deviceContext->PSSetShader(pixelshader_2d.GetShader(), NULL, 0);
+	this->deviceContext->VSSetShader(vertexshader_2d.GetShader(), NULL, 0);
+
+	{
+		this->sprite.Draw(camera2D.GetWorldMatrix() * camera2D.GetOrthoMatrix());
 	}
 
 	// Draw Text
@@ -253,16 +261,36 @@ bool Graphics::InitializeShaders()
 	}
 #pragma endregion
 
-	D3D11_INPUT_ELEMENT_DESC layout[] =
+	//2d shaders
+	D3D11_INPUT_ELEMENT_DESC layout2D[] =
+	{
+		{ "POSITION", 0, DXGI_FORMAT::DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "TEXCOORD", 0, DXGI_FORMAT::DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA, 0 }
+	};
+
+	UINT numElements2D = ARRAYSIZE(layout2D);
+
+	if (!vertexshader_2d.Initialize(this->device, shaderfolder + L"vertexshader_2d.cso", layout2D, numElements2D))
+	{
+		return false;
+	}
+
+	if (!pixelshader_2d.Initialize(this->device, shaderfolder + L"pixelshader_2d.cso"))
+	{
+		return false;
+	}
+
+	//3d shaders
+	D3D11_INPUT_ELEMENT_DESC layout3D[] =
 	{
 		{ "POSITION", 0, DXGI_FORMAT::DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		{ "TEXCOORD", 0, DXGI_FORMAT::DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		{ "NORMAL", 0, DXGI_FORMAT::DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA, 0 }
 	};
 
-	UINT numElements = ARRAYSIZE( layout );
+	UINT numElements3D = ARRAYSIZE(layout3D);
 
-	if ( !vertexshader.Initialize( this->device, shaderfolder + L"vertexshader.cso", layout, numElements ) )
+	if ( !vertexshader.Initialize( this->device, shaderfolder + L"vertexshader.cso", layout3D, numElements3D ) )
 	{
 		return false;
 	}
@@ -299,6 +327,9 @@ bool Graphics::InitializeScene()
 		hr = this->cb_vs_vertexshader.Initialize( this->device.Get(), this->deviceContext.Get() );
 		COM_ERROR_IF_FAILED( hr, "Failed to initialize constant buffer." );
 
+		hr = this->cb_vs_vertexshader_2d.Initialize(this->device.Get(), this->deviceContext.Get());
+		COM_ERROR_IF_FAILED(hr, "Failed to initialize constant buffer.");
+
 		hr = this->cb_ps_light.Initialize( this->device.Get(), this->deviceContext.Get() );
 		COM_ERROR_IF_FAILED( hr, "Failed to initialize constant buffer." );
 
@@ -316,8 +347,15 @@ bool Graphics::InitializeScene()
 			return false;
 		}
 
-		camera.SetPosition( 0.0f, 0.0f, -2.0f );
-		camera.SetProjectionValues( 90.0f, static_cast<float>( this->windowWidth ) / static_cast<float>( this->windowHeight ), 0.1f, 3000.0f );
+		if (!sprite.Initialize(this->device.Get(), this->deviceContext.Get(), 256, 256, "../Data/Textures/sprite_256x256.png", cb_vs_vertexshader_2d))
+		{
+			return false;
+		}
+
+		camera2D.SetProjectionValues(windowWidth, windowHeight, 0.0f, 1.0f);
+
+		camera3D.SetPosition( 0.0f, 0.0f, -2.0f );
+		camera3D.SetProjectionValues( 90.0f, static_cast<float>( this->windowWidth ) / static_cast<float>( this->windowHeight ), 0.1f, 3000.0f );
 	}
 	catch ( COMException& exception )
 	{
