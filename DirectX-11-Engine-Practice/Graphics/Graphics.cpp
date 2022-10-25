@@ -37,6 +37,9 @@ void Graphics::RenderFrame()
 	this->cb_ps_light.data.dynamicLightColor = light.lightColor;
 	this->cb_ps_light.data.dynamicLightStrength = light.lightStrength;
 	this->cb_ps_light.data.dynamicLightPosition = light.GetPositionFloat3();
+	this->cb_ps_light.data.dynamicLightAttenuation_a = light.attenuation_a;
+	this->cb_ps_light.data.dynamicLightAttenuation_b = light.attenuation_b;
+	this->cb_ps_light.data.dynamicLightAttenuation_c = light.attenuation_c;
 	this->cb_ps_light.ApplyChanges();
 	this->deviceContext->PSSetConstantBuffers(0, 1, this->cb_ps_light.GetAddressOf());
 
@@ -85,6 +88,12 @@ void Graphics::RenderFrame()
 	ImGui::Begin( "Light Controls" );
 	ImGui::DragFloat3("Ambient Light Color", &this->cb_ps_light.data.ambientLightColor.x, 0.01f, 0.0f, 1.0f);
 	ImGui::DragFloat("Ambient Light Strength", &this->cb_ps_light.data.ambientLightStrength, 0.01f, 0.0f, 1.0f);
+	ImGui::NewLine();
+	ImGui::DragFloat3("Dynamic Light Color", &this->light.lightColor.x, 0.01f, 0.0f, 10.0f);
+	ImGui::DragFloat("Dynamic Light Strength", &this->light.lightStrength, 0.01f, 0.0f, 10.0f);
+	ImGui::DragFloat("Dynamic Light Attenuation A", &this->light.attenuation_a, 0.01f, 0.1f, 10.0f);
+	ImGui::DragFloat("Dynamic Light Attenuation B", &this->light.attenuation_b, 0.01f, 0.0f, 10.0f);
+	ImGui::DragFloat("Dynamic Light Attenuation C", &this->light.attenuation_c, 0.01f, 0.0f, 10.0f);
 	ImGui::End();
 	//Assemble Together Draw Data
 	ImGui::Render();
@@ -297,7 +306,7 @@ bool Graphics::InitializeScene()
 		this->cb_ps_light.data.ambientLightStrength = 1.0f;
 
 		//Initialize Model(s)
-		if ( !gameObject.Initialize( "../Data/Objects/Samples/dodge_challenger.fbx", this->device.Get(), this->deviceContext.Get(), cb_vs_vertexshader))
+		if ( !gameObject.Initialize( "../Data/Objects/nanosuit/nanosuit.obj", this->device.Get(), this->deviceContext.Get(), cb_vs_vertexshader))
 		{
 			return false;
 		}
