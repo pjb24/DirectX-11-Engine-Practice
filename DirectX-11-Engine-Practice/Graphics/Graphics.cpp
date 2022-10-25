@@ -284,7 +284,7 @@ bool Graphics::InitializeScene()
 		COM_ERROR_IF_FAILED( hr, "Failed to initialize constant buffer." );
 
 		//Initialize Model(s)
-		if ( !gameObject.Initialize( "../Data/Objects/Samples/orange_embeddedtexture.fbx", this->device.Get(), this->deviceContext.Get(), cb_vs_vertexshader))
+		if ( !gameObject.Initialize( "../Data/Objects/Samples/person_embeddedindexed.blend", this->device.Get(), this->deviceContext.Get(), cb_vs_vertexshader))
 		{
 			return false;
 		}
