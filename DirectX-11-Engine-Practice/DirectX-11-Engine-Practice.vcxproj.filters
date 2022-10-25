@@ -120,6 +120,9 @@
     <ClCompile Include="Graphics\RenderableGameObject.cpp">
       <Filter>Source File\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="Graphics\Light.cpp">
+      <Filter>Source File\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StringHelper.h">
@@ -224,12 +227,18 @@
     <ClInclude Include="Graphics\RenderableGameObject.h">
       <Filter>Header File\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="Graphics\Light.h">
+      <Filter>Header File\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="vertexshader.hlsl">
       <Filter>리소스 파일</Filter>
     </FxCompile>
     <FxCompile Include="pixelshader.hlsl">
+      <Filter>리소스 파일</Filter>
+    </FxCompile>
+    <FxCompile Include="pixelshader_nolight.hlsl">
       <Filter>리소스 파일</Filter>
     </FxCompile>
   </ItemGroup>

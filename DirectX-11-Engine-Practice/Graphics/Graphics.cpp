@@ -34,6 +34,9 @@ bool Graphics::Initialize( HWND hwnd, int width, int height )
 
 void Graphics::RenderFrame()
 {
+	this->cb_ps_light.data.dynamicLightColor = light.lightColor;
+	this->cb_ps_light.data.dynamicLightStrength = light.lightStrength;
+	this->cb_ps_light.data.dynamicLightPosition = light.GetPositionFloat3();
 	this->cb_ps_light.ApplyChanges();
 	this->deviceContext->PSSetConstantBuffers(0, 1, this->cb_ps_light.GetAddressOf());
 
@@ -53,6 +56,10 @@ void Graphics::RenderFrame()
 
 	{
 		this->gameObject.Draw( camera.GetViewMatrix() * camera.GetProjectionMatrix() );
+	}
+	{
+		this->deviceContext->PSSetShader(pixelshader_nolight.GetShader(), NULL, 0);
+		this->light.Draw(camera.GetViewMatrix() * camera.GetProjectionMatrix());
 	}
 
 	// Draw Text
@@ -240,7 +247,8 @@ bool Graphics::InitializeShaders()
 	D3D11_INPUT_ELEMENT_DESC layout[] =
 	{
 		{ "POSITION", 0, DXGI_FORMAT::DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "TEXCOORD", 0, DXGI_FORMAT::DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA, 0 }
+		{ "TEXCOORD", 0, DXGI_FORMAT::DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "NORMAL", 0, DXGI_FORMAT::DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA, 0 }
 	};
 
 	UINT numElements = ARRAYSIZE( layout );
@@ -251,6 +259,11 @@ bool Graphics::InitializeShaders()
 	}
 
 	if ( !pixelshader.Initialize( this->device, shaderfolder + L"pixelshader.cso" ) )
+	{
+		return false;
+	}
+
+	if (!pixelshader_nolight.Initialize(this->device, shaderfolder + L"pixelshader_nolight.cso"))
 	{
 		return false;
 	}
@@ -285,6 +298,11 @@ bool Graphics::InitializeScene()
 
 		//Initialize Model(s)
 		if ( !gameObject.Initialize( "../Data/Objects/Samples/dodge_challenger.fbx", this->device.Get(), this->deviceContext.Get(), cb_vs_vertexshader))
+		{
+			return false;
+		}
+
+		if (!light.Initialize(this->device.Get(), this->deviceContext.Get(), cb_vs_vertexshader))
 		{
 			return false;
 		}
