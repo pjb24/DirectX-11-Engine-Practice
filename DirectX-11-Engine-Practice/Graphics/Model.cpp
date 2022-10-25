@@ -192,13 +192,23 @@ std::vector<Texture> Model::LoadMaterialTextures(aiMaterial* pMaterial, aiTextur
 			TextureStorageType storetype = DetermineTextureStorageType(pScene, pMaterial, i, textureType);
 			switch (storetype)
 			{
-				case TextureStorageType::Disk:
-				{
-					std::string filename = this->directory + '\\' + path.C_Str();
-					Texture diskTexture(this->device, filename, textureType);
-					materialTextures.push_back(diskTexture);
-					break;
-				}
+			case TextureStorageType::EmbeddedCompressed:
+			{
+				const aiTexture* pTexture = pScene->GetEmbeddedTexture(path.C_Str());
+				Texture embeddedTexture(this->device,
+					reinterpret_cast<uint8_t*>(pTexture->pcData),
+					pTexture->mWidth,
+					textureType);
+				materialTextures.push_back(embeddedTexture);
+				break;
+			}
+			case TextureStorageType::Disk:
+			{
+				std::string filename = this->directory + '\\' + path.C_Str();
+				Texture diskTexture(this->device, filename, textureType);
+				materialTextures.push_back(diskTexture);
+				break;
+			}
 			}
 		}
 	}
