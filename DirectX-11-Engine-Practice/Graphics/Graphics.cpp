@@ -53,16 +53,8 @@ void Graphics::RenderFrame()
 	this->deviceContext->OMSetBlendState( NULL, NULL, 0xFFFFFFFF );
 	this->deviceContext->PSSetSamplers( 0, 1, this->samplerState.GetAddressOf() );
 	
-	this->deviceContext->OMSetDepthStencilState(this->depthStencilState_drawMask.Get(), 0);
-	this->deviceContext->IASetInputLayout(this->vertexshader_2d.GetInputLayout());
-	this->deviceContext->PSSetShader(pixelshader_2d.GetShader(), NULL, 0);
-	this->deviceContext->VSSetShader(vertexshader_2d.GetShader(), NULL, 0);
-	{
-		this->sprite.Draw(camera2D.GetWorldMatrix() * camera2D.GetOrthoMatrix());
-	}
-
 	this->deviceContext->IASetInputLayout(this->vertexshader.GetInputLayout());
-	this->deviceContext->OMSetDepthStencilState(this->depthStencilState_applyMask.Get(), 0);
+	this->deviceContext->OMSetDepthStencilState(this->depthStencilState.Get(), 0);
 	this->deviceContext->VSSetShader(vertexshader.GetShader(), NULL, 0);
 	this->deviceContext->PSSetShader(pixelshader.GetShader(), NULL, 0);
 	{
@@ -85,6 +77,20 @@ void Graphics::RenderFrame()
 	}
 	spriteBatch->Begin();
 	spriteFont->DrawString( spriteBatch.get(), StringHelper::StringToWide( fpsString ).c_str(), DirectX::XMFLOAT2( 0, 0 ), DirectX::Colors::White, 0.0f, DirectX::XMFLOAT2( 0, 0 ), DirectX::XMFLOAT2( 1.0f, 1.0f ) );
+	spriteBatch->End();
+
+	//sprite mask
+	this->deviceContext->OMSetDepthStencilState(this->depthStencilState_drawMask.Get(), 0);
+	this->deviceContext->IASetInputLayout(this->vertexshader_2d.GetInputLayout());
+	this->deviceContext->PSSetShader(nullptr, NULL, 0);
+	this->deviceContext->VSSetShader(vertexshader_2d.GetShader(), NULL, 0);
+	{
+		this->sprite.Draw(camera2D.GetWorldMatrix() * camera2D.GetOrthoMatrix());
+	}
+
+	//red text
+	spriteBatch->Begin(SpriteSortMode_Deferred, nullptr, nullptr, depthStencilState_applyMask.Get());
+	spriteFont->DrawString(spriteBatch.get(), StringHelper::StringToWide(fpsString).c_str(), DirectX::XMFLOAT2(0, 0), DirectX::Colors::Red, 0.0f, DirectX::XMFLOAT2(0, 0), DirectX::XMFLOAT2(1.0f, 1.0f));
 	spriteBatch->End();
 
 	static int counter = 0;
@@ -386,7 +392,9 @@ bool Graphics::InitializeScene()
 			return false;
 		}
 
-		sprite.SetPosition(XMFLOAT3(windowWidth / 2 - sprite.GetWidth() / 2, windowHeight / 2 - sprite.GetHeight() / 2, 0));
+		//sprite.SetPosition(XMFLOAT3(windowWidth / 2 - sprite.GetWidth() / 2, windowHeight / 2 - sprite.GetHeight() / 2, 0));
+		sprite.SetPosition(XMFLOAT3(0.0f, 0.0f, 0.0f));
+		sprite.SetScale(24, 24, 0.0f);
 
 		camera2D.SetProjectionValues(windowWidth, windowHeight, 0.0f, 1.0f);
 
