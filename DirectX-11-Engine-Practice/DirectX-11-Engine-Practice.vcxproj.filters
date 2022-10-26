@@ -271,5 +271,8 @@
     <FxCompile Include="vertexshader_2d.hlsl">
       <Filter>리소스 파일</Filter>
     </FxCompile>
+    <FxCompile Include="pixelshader_2d_discard.hlsl">
+      <Filter>리소스 파일</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

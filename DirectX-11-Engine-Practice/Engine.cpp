@@ -52,12 +52,6 @@ void Engine::Update()
 
 	this->gfx.gameObject.AdjustRotation( 0.0f, 0.001f * dt, 0.0f );
 
-	this->gfx.sprite.AdjustPosition(0.3f * dt, 0.0f, 0.0f);
-	if (this->gfx.sprite.GetPositionFloat3().x > 100.0f)
-	{
-		this->gfx.sprite.SetPosition(0.0f, 0.0f, 0.0f);
-	}
-
 	float cameraSpeed = 0.006f;
 
 	if (keyboard.KeyIsPressed(VK_SHIFT))
