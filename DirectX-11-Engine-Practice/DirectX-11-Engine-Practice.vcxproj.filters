@@ -18,9 +18,6 @@
     <Filter Include="Source File\Graphics">
       <UniqueIdentifier>{f017b9f8-931a-4380-a9c8-1387df7cdd03}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source File\Graphics\ImGui">
-      <UniqueIdentifier>{b6f3b0cf-6263-4fdb-8193-ccd5ab6f4906}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header File">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
@@ -34,8 +31,11 @@
     <Filter Include="Header File\Graphics">
       <UniqueIdentifier>{83a7a242-a19e-473c-b618-b504eb40b7ff}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header File\Graphics\ImGui">
-      <UniqueIdentifier>{1a56b022-00fc-44d2-a9fd-a21062b68d75}</UniqueIdentifier>
+    <Filter Include="Header File\Connect">
+      <UniqueIdentifier>{09ba326d-1d16-4abc-818e-84eddb455656}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header File\Graphics\Decode">
+      <UniqueIdentifier>{cb725a4b-6d1f-4948-83d0-011231aa4b70}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -78,35 +78,8 @@
     <ClCompile Include="Graphics\Shaders.cpp">
       <Filter>Source File\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="Graphics\Camera3D.cpp">
-      <Filter>Source File\Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="Timer.cpp">
       <Filter>Source File</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphics\ImGui\imgui.cpp">
-      <Filter>Source File\Graphics\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphics\ImGui\imgui_draw.cpp">
-      <Filter>Source File\Graphics\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphics\ImGui\imgui_impl_dx11.cpp">
-      <Filter>Source File\Graphics\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphics\ImGui\imgui_impl_win32.cpp">
-      <Filter>Source File\Graphics\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphics\ImGui\imgui_tables.cpp">
-      <Filter>Source File\Graphics\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphics\ImGui\imgui_widgets.cpp">
-      <Filter>Source File\Graphics\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphics\Model.cpp">
-      <Filter>Source File\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphics\Mesh.cpp">
-      <Filter>Source File\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Graphics\GameObject.cpp">
       <Filter>Source File\Graphics</Filter>
@@ -117,16 +90,7 @@
     <ClCompile Include="Graphics\Texture.cpp">
       <Filter>Source File\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="Graphics\RenderableGameObject.cpp">
-      <Filter>Source File\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphics\Light.cpp">
-      <Filter>Source File\Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="Graphics\GameObject2D.cpp">
-      <Filter>Source File\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphics\GameObject3D.cpp">
       <Filter>Source File\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Graphics\Camera2D.cpp">
@@ -188,44 +152,11 @@
     <ClInclude Include="Graphics\ConstantBuffer.h">
       <Filter>Header File\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Graphics\Camera3D.h">
-      <Filter>Header File\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="Timer.h">
       <Filter>Header File</Filter>
     </ClInclude>
-    <ClInclude Include="Graphics\ImGui\imconfig.h">
-      <Filter>Header File\Graphics\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\ImGui\imgui.h">
-      <Filter>Header File\Graphics\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\ImGui\imgui_impl_dx11.h">
-      <Filter>Header File\Graphics\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\ImGui\imgui_impl_win32.h">
-      <Filter>Header File\Graphics\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\ImGui\imgui_internal.h">
-      <Filter>Header File\Graphics\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\ImGui\imstb_rectpack.h">
-      <Filter>Header File\Graphics\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\ImGui\imstb_textedit.h">
-      <Filter>Header File\Graphics\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\ImGui\imstb_truetype.h">
-      <Filter>Header File\Graphics\ImGui</Filter>
-    </ClInclude>
     <ClInclude Include="COMException.h">
       <Filter>Header File</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\Model.h">
-      <Filter>Header File\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\Mesh.h">
-      <Filter>Header File\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Graphics\GameObject.h">
       <Filter>Header File\Graphics</Filter>
@@ -236,16 +167,7 @@
     <ClInclude Include="Graphics\Texture.h">
       <Filter>Header File\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Graphics\RenderableGameObject.h">
-      <Filter>Header File\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\Light.h">
-      <Filter>Header File\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="Graphics\GameObject2D.h">
-      <Filter>Header File\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\GameObject3D.h">
       <Filter>Header File\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Graphics\Camera2D.h">
@@ -254,24 +176,18 @@
     <ClInclude Include="Graphics\Sprite.h">
       <Filter>Header File\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="StepTimer.h">
+      <Filter>Header File</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="vertexshader.hlsl">
-      <Filter>리소스 파일</Filter>
-    </FxCompile>
-    <FxCompile Include="pixelshader.hlsl">
-      <Filter>리소스 파일</Filter>
-    </FxCompile>
-    <FxCompile Include="pixelshader_nolight.hlsl">
-      <Filter>리소스 파일</Filter>
-    </FxCompile>
     <FxCompile Include="pixelshader_2d.hlsl">
       <Filter>리소스 파일</Filter>
     </FxCompile>
     <FxCompile Include="vertexshader_2d.hlsl">
       <Filter>리소스 파일</Filter>
     </FxCompile>
-    <FxCompile Include="pixelshader_2d_discard.hlsl">
+    <FxCompile Include="pixelshader_2d_2.hlsl">
       <Filter>리소스 파일</Filter>
     </FxCompile>
   </ItemGroup>

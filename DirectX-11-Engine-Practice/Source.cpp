@@ -16,10 +16,13 @@ int APIENTRY wWinMain( _In_ HINSTANCE hInstance,
 
 	if ( engine.Initialize( hInstance, "Title", "MyWindowClas", 800, 600 ) )
 	{
+		engine.SetFixedTimeStep(true);
+		engine.SetTargetElapsedSeconds(1.f / 30.f);
 		while ( engine.ProcessMessage() == true )
 		{
-			engine.Update();
-			engine.RenderFrame();
+			//engine.Update();
+			//engine.RenderFrame();
+			engine.Tick();
 		}
 	}
 

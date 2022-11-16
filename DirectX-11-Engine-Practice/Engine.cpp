@@ -27,74 +27,106 @@ void Engine::Update()
 	float dt = this->timer.GetMilisecondsElapsed();
 	this->timer.Restart();
 
-	while ( !keyboard.CharBufferIsEmpty() )
-	{
-		unsigned char ch = keyboard.ReadChar();
-	}
-
-	while ( !keyboard.KeyBufferIsEmpty() )
-	{
-		KeyboardEvent kbe = keyboard.ReadKey();
-		unsigned char keycode = kbe.GetKeyCode();
-	}
-
 	while ( !mouse.EventBuffersIsEmpty() )
 	{
 		MouseEvent me = mouse.ReadEvent();
 		if ( mouse.IsRightDown() )
 		{
-			if ( me.GetType() == MouseEvent::EventType::RAW_MOVE )
-			{
-				this->gfx.camera3D.AdjustRotation( (float)me.GetPosY() * 0.01f, (float)me.GetPosX() * 0.01f, 0.0f );
-			}
 		}
 	}
 
-	this->gfx.gameObject.AdjustRotation( 0.0f, 0.001f * dt, 0.0f );
-
-	float cameraSpeed = 0.006f;
-
-	if (keyboard.KeyIsPressed(VK_SHIFT))
+	KeyboardEvent ke = keyboard.ReadKey();
+	if (ke.GetKeyCode() == 'A' && ke.IsPress())
 	{
-		cameraSpeed = 0.3f;
+		this->gfx.CreateSprite("rtsp://admin:1q2w3e4r5t!@192.168.1.211/Streaming/Channels/201");
 	}
 
-	if ( keyboard.KeyIsPressed( 'W' ) )
+	if (ke.GetKeyCode() == 'B' && ke.IsPress())
 	{
-		this->gfx.camera3D.AdjustPosition( this->gfx.camera3D.GetForwardVector() * cameraSpeed * dt );
-	}
-	if ( keyboard.KeyIsPressed( 'S' ) )
-	{
-		this->gfx.camera3D.AdjustPosition( this->gfx.camera3D.GetBackwardVector() * cameraSpeed * dt );
-	}
-	if ( keyboard.KeyIsPressed( 'A' ) )
-	{
-		this->gfx.camera3D.AdjustPosition( this->gfx.camera3D.GetLeftVector() * cameraSpeed * dt );
-	}
-	if ( keyboard.KeyIsPressed( 'D' ) )
-	{
-		this->gfx.camera3D.AdjustPosition( this->gfx.camera3D.GetRightVector() * cameraSpeed * dt );
-	}
-	if ( keyboard.KeyIsPressed( VK_SPACE ) )
-	{
-		this->gfx.camera3D.AdjustPosition( 0.0f, cameraSpeed * dt, 0.0f );
-	}
-	if ( keyboard.KeyIsPressed( 'Z' ) )
-	{
-		this->gfx.camera3D.AdjustPosition( 0.0f, -cameraSpeed * dt, 0.0f );
+		this->gfx.CreateSprite("rtsp://admin:1q2w3e4r5t!@192.168.1.211/Streaming/Channels/301");
 	}
 
-	if (keyboard.KeyIsPressed('C'))
+	if (ke.GetKeyCode() == 'C' && ke.IsPress())
 	{
-		XMVECTOR lightPosition = this->gfx.camera3D.GetPositionVector();
-		lightPosition += this->gfx.camera3D.GetForwardVector();
-		this->gfx.light.SetPosition(lightPosition);
-		this->gfx.light.SetRotation(this->gfx.camera3D.GetRotationFloat3());
-		//this->gfx.light.SetPosition(this->gfx.camera.GetPositionFloat3());
+		this->gfx.DeleteSprite();
 	}
+}
+
+void Engine::Update(DX::StepTimer const& timer)
+{
+	float delta = float(timer.GetElapsedSeconds());
+
+	while (!mouse.EventBuffersIsEmpty())
+	{
+		MouseEvent me = mouse.ReadEvent();
+		if (mouse.IsRightDown())
+		{
+		}
+	}
+
+	KeyboardEvent ke = keyboard.ReadKey();
+	if (ke.GetKeyCode() == 'A' && ke.IsPress())
+	{
+		//this->gfx.CreateSprite("rtsp://admin:1q2w3e4r5t!@192.168.1.211/Streaming/Channels/201");
+		this->gfx.CreateSprite("C:/D/SampleMedia/Media1.mp4");
+	}
+
+	if (ke.GetKeyCode() == 'B' && ke.IsPress())
+	{
+		//this->gfx.CreateSprite("rtsp://admin:1q2w3e4r5t!@192.168.1.211/Streaming/Channels/301");
+		this->gfx.CreateSprite("C:/D/SampleMedia/Media2.mp4");
+	}
+
+	if (ke.GetKeyCode() == 'C' && ke.IsPress())
+	{
+		this->gfx.DeleteSprite();
+	}
+
+	//for (std::vector<Sprite*>::iterator it = gfx.sprites.begin(); it != gfx.sprites.end(); it++)
+	//{
+	//	(*it)->AdjustRotation(0, 0, -2 * delta);
+	//}
 }
 
 void Engine::RenderFrame()
 {
 	gfx.RenderFrame();
+}
+
+void Engine::Tick()
+{
+	static int engineTickCount = 0;
+	static bool needSomeUpdate = false;
+	s_timer.Tick([&]()
+		{
+			Update(s_timer);
+
+			//engineTickCount++;
+			//if (timer.GetMilisecondsElapsed() > 1000)
+			//{
+			//	static std::wstring _engineString;
+			//	_engineString += L"Update Count: " + std::to_wstring(engineTickCount) + L"\n";
+			//	OutputDebugString(_engineString.c_str());
+			//	engineTickCount = 0;
+			//	timer.Restart();
+			//}
+
+			needSomeUpdate = true;
+		});
+
+	if (needSomeUpdate)
+	{
+		RenderFrame();
+		needSomeUpdate = false;
+	}
+}
+
+void Engine::SetFixedTimeStep(bool isFixedTimestep)
+{
+	s_timer.SetFixedTimeStep(isFixedTimestep);
+}
+
+void Engine::SetTargetElapsedSeconds(double targetElapsed)
+{
+	s_timer.SetTargetElapsedSeconds(targetElapsed);
 }

@@ -1,83 +1,152 @@
 #include "Texture.h"
 #include "../ErrorLogger.h"
-#include <WICTextureLoader.h>
-#include <DDSTextureLoader.h>
 
-Texture::Texture(ID3D11Device* device, const Color& color, aiTextureType type)
+Texture::Texture(ID3D11Device* device, const Color& color)
 {
-	this->Initialize1x1ColorTexture(device, color, type);
+	this->Initialize1x1ColorTexture(device, color);
 }
 
-Texture::Texture(ID3D11Device* device, const Color* colorData, UINT width, UINT height, aiTextureType type)
+Texture::Texture(ID3D11Device* device, const Color* colorData, UINT width, UINT height)
 {
-	this->InitializeColorTexture(device, colorData, width, height, type);
+	this->InitializeColorTexture(device, colorData, width, height);
 }
 
-Texture::Texture(ID3D11Device* device, const std::string& filePath, aiTextureType type)
+Texture::Texture(ID3D11Device* device, UINT width, UINT height)
 {
-	this->type = type;
+	this->InitializeColorTexture(device, nullptr, width, height);
+}
 
-	if(StringHelper::GetFileExtension(filePath) == ".dds")
+bool Texture::UpdateTexture(ID3D11DeviceContext* deviceContext, uint8_t* a_pData1, int a_linesize1, uint8_t* a_pData2, int a_linesize2, uint8_t* a_pData3, int a_linesize3)
+{
+	HRESULT hr = S_OK;
+	PBYTE p = NULL;
+	BYTE* ptr = NULL;
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+
+	hr = deviceContext->Map(textureY.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	if (FAILED(hr))
 	{
-		HRESULT hr = DirectX::CreateDDSTextureFromFile(device, StringHelper::StringToWide(filePath).c_str(), texture.GetAddressOf(), this->textureView.GetAddressOf());
-		if (FAILED(hr))
-		{
-			this->Initialize1x1ColorTexture(device, Colors::UnloadedTextureColor, type);
-		}
-		return;
+		ErrorLogger::Log(hr, "Failed to map constant buffer.");
+		return false;
 	}
-	else
+	p = (PBYTE)mappedResource.pData;
+	ptr = a_pData1;
+	// for 시작 - 이미지의 높이만큼 반복
+	for (int i = 0; i < this->height; i++)
 	{
-		HRESULT hr = DirectX::CreateWICTextureFromFile(device, StringHelper::StringToWide(filePath).c_str(), texture.GetAddressOf(), this->textureView.GetAddressOf());
-		if (FAILED(hr))
-		{
-			this->Initialize1x1ColorTexture(device, Colors::UnloadedTextureColor, type);
-		}
-		return;
+		memcpy(p, &ptr[i * a_linesize1], this->width);
+		p = p + mappedResource.RowPitch;
 	}
+	deviceContext->Unmap(textureY.Get(), 0);
+
+	hr = deviceContext->Map(textureU.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	if (FAILED(hr))
+	{
+		ErrorLogger::Log(hr, "Failed to map constant buffer.");
+		return false;
+	}
+	p = (PBYTE)mappedResource.pData;
+	ptr = a_pData2;
+	for (int i = 0; i < this->height / 2; i++)
+	{
+		memcpy(p, &ptr[i * a_linesize2], this->width / 2);
+		p = p + mappedResource.RowPitch;
+	}
+	deviceContext->Unmap(textureU.Get(), 0);
+
+	hr = deviceContext->Map(textureV.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	if (FAILED(hr))
+	{
+		ErrorLogger::Log(hr, "Failed to map constant buffer.");
+		return false;
+	}
+	p = (PBYTE)mappedResource.pData;
+	ptr = a_pData3;
+	for (int i = 0; i < this->height / 2; i++)
+	{
+		memcpy(p, &ptr[i * a_linesize3], this->width / 2);
+		p = p + mappedResource.RowPitch;
+	}
+	deviceContext->Unmap(textureV.Get(), 0);
+
+	return true;
 }
 
-Texture::Texture(ID3D11Device* device, const uint8_t* pData, size_t size, aiTextureType type)
+ID3D11ShaderResourceView* Texture::GetTextureResourceYView()
 {
-	this->type = type;
-	HRESULT hr = DirectX::CreateWICTextureFromMemory(device, pData, size, this->texture.GetAddressOf(), this->textureView.GetAddressOf());
-	COM_ERROR_IF_FAILED(hr, "Failed to create Texture from memory.");
+	return this->textureViewY.Get();
 }
 
-aiTextureType Texture::GetType()
+ID3D11ShaderResourceView** Texture::GetTextureResourceYViewAddress()
 {
-	return this->type;
+	return this->textureViewY.GetAddressOf();
 }
 
-ID3D11ShaderResourceView* Texture::GetTextureResourceView()
+ID3D11ShaderResourceView* Texture::GetTextureResourceUView()
 {
-	return this->textureView.Get();
+	return this->textureViewU.Get();
 }
 
-ID3D11ShaderResourceView** Texture::GetTextureResourceViewAddress()
+ID3D11ShaderResourceView** Texture::GetTextureResourceUViewAddress()
 {
-	return this->textureView.GetAddressOf();
+	return this->textureViewU.GetAddressOf();
 }
 
-void Texture::Initialize1x1ColorTexture(ID3D11Device* device, const Color& colorData, aiTextureType type)
+ID3D11ShaderResourceView* Texture::GetTextureResourceVView()
 {
-	InitializeColorTexture(device, &colorData, 1, 1, type);
+	return this->textureViewV.Get();
 }
 
-void Texture::InitializeColorTexture(ID3D11Device* device, const Color* colorData, UINT width, UINT height, aiTextureType type)
+ID3D11ShaderResourceView** Texture::GetTextureResourceVViewAddress()
 {
-	this->type = type;
-	CD3D11_TEXTURE2D_DESC textureDesc(DXGI_FORMAT_R8G8B8A8_UNORM, width, height);
-	ID3D11Texture2D* p2DTexture = nullptr;
-	D3D11_SUBRESOURCE_DATA initialData{};
-	initialData.pSysMem = colorData;
-	initialData.SysMemPitch = width * sizeof(Color);
+	return this->textureViewV.GetAddressOf();
+}
+
+void Texture::Initialize1x1ColorTexture(ID3D11Device* device, const Color& colorData)
+{
+	InitializeColorTexture(device, &colorData, 1, 1);
+}
+
+void Texture::InitializeColorTexture(ID3D11Device* device, const Color* colorData, UINT width, UINT height)
+{
+	ID3D11Texture2D* p2DTextureY = nullptr;
+	ID3D11Texture2D* p2DTextureU = nullptr;
+	ID3D11Texture2D* p2DTextureV = nullptr;
+
+	CD3D11_TEXTURE2D_DESC textureDesc(DXGI_FORMAT_R8_UNORM, width, height);
+	textureDesc.Usage = D3D11_USAGE_DYNAMIC;
+	textureDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	textureDesc.MipLevels = 1;
+
+	this->width = width;
+	this->height = height;
+
+	HRESULT hr = S_OK;
 	
-	HRESULT hr = device->CreateTexture2D(&textureDesc, &initialData, &p2DTexture);
+	hr = device->CreateTexture2D(&textureDesc, NULL, &p2DTextureY);
 	COM_ERROR_IF_FAILED(hr, "Failed to initialize texture from color data.");
-	texture = static_cast<ID3D11Texture2D*>(p2DTexture);
-	
-	CD3D11_SHADER_RESOURCE_VIEW_DESC srvDesc(D3D11_SRV_DIMENSION_TEXTURE2D, textureDesc.Format);
-	hr = device->CreateShaderResourceView(texture.Get(), &srvDesc, textureView.GetAddressOf());
+	textureY = static_cast<ID3D11Texture2D*>(p2DTextureY);
+	CD3D11_SHADER_RESOURCE_VIEW_DESC srvDescY(D3D11_SRV_DIMENSION_TEXTURE2D, textureDesc.Format);
+	srvDescY.Texture2D.MipLevels = 1;
+	hr = device->CreateShaderResourceView(textureY.Get(), &srvDescY, textureViewY.GetAddressOf());
+	COM_ERROR_IF_FAILED(hr, "Failed to create shader resource view from texture generated from color data.");
+
+	textureDesc.Width = width / 2;
+	textureDesc.Height = height / 2;
+
+	hr = device->CreateTexture2D(&textureDesc, NULL, &p2DTextureU);
+	COM_ERROR_IF_FAILED(hr, "Failed to initialize texture from color data.");
+	textureU = static_cast<ID3D11Texture2D*>(p2DTextureU);
+	CD3D11_SHADER_RESOURCE_VIEW_DESC srvDescU(D3D11_SRV_DIMENSION_TEXTURE2D, textureDesc.Format);
+	srvDescU.Texture2D.MipLevels = 1;
+	hr = device->CreateShaderResourceView(textureU.Get(), &srvDescU, textureViewU.GetAddressOf());
+	COM_ERROR_IF_FAILED(hr, "Failed to create shader resource view from texture generated from color data.");
+
+	hr = device->CreateTexture2D(&textureDesc, NULL, &p2DTextureV);
+	COM_ERROR_IF_FAILED(hr, "Failed to initialize texture from color data.");
+	textureV = static_cast<ID3D11Texture2D*>(p2DTextureV);
+	CD3D11_SHADER_RESOURCE_VIEW_DESC srvDescV(D3D11_SRV_DIMENSION_TEXTURE2D, textureDesc.Format);
+	srvDescV.Texture2D.MipLevels = 1;
+	hr = device->CreateShaderResourceView(textureV.Get(), &srvDescV, textureViewV.GetAddressOf());
 	COM_ERROR_IF_FAILED(hr, "Failed to create shader resource view from texture generated from color data.");
 }

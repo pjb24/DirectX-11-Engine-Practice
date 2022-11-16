@@ -1,5 +1,11 @@
 #pragma once
-#include "Model.h"
+#include "Vertex.h"
+#include "VertexBuffer.h"
+#include "IndexBuffer.h"
+#include "ConstantBuffer.h"
+#include "Texture.h"
+
+using namespace DirectX;
 
 class GameObject
 {
